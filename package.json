@@ -47,7 +47,7 @@
     "electron-is": "^3.0.0"
   },
   "devDependencies": {
-    "electron": "^11.0.0-beta.22",
+    "electron": "^11.0.0",
     "electron-builder": "^22.9.1"
   }
 }
