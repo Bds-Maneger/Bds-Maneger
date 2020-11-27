@@ -9,3 +9,5 @@
 4. Default page folder changes
 
 5. A message was removed when closing bds_maneger
+
+6. replace old way of extracting zip file
