@@ -2,6 +2,8 @@
 var status = localStorage.getItem('bds_status')
 var blank = ''
 
+
+
 if (status == blank){
     console.log('Init server')
     localStorage.setItem('bds_status', 'stoped')

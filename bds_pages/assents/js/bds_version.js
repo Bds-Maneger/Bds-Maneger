@@ -27,9 +27,9 @@ function DownloadBDS(){
         var Vdown = JSON.parse(langArray).Versions[jsonNumber]
         localStorage.setItem('bds_server_version', Vdown)
         if (process.platform == 'win32'){
-            var URLd = `https://minecraft.azureedge.net/bin-win/bedrock-server-${Vdown}.zip`
+            var URLd = `https://minecraft.azureedge.net/bin-win/bedrock-server-${Vdown}.zip`;
         } else if (process.platform == 'linux'){
-            var URLd = `https://minecraft.azureedge.net/bin-linux/bedrock-server-${Vdown}.zip`
+            var URLd = `https://minecraft.azureedge.net/bin-linux/bedrock-server-${Vdown}.zip`;
         }
         console.log(URLd, NAMEd)
         var NAMEd = 'bedrock-server-' + Vdown + '.zip'
@@ -38,7 +38,7 @@ function DownloadBDS(){
         if (process.platform == 'win32'){
           var downloadBDSchild = exec(`cd %TMP% && curl ${URLd} --output ${NAMEd}`);
         } else if (process.platform == 'linux'){
-          var downloadBDSchild = exec(`cd /tmp  && curl ${URLd} --output ${NAMEd}`);
+          var downloadBDSchild = exec(`cd /tmp && curl ${URLd} --output ${NAMEd}`);
         }
         downloadBDSchild.stdout.on('data', function (data) {
             logD(data)
@@ -46,43 +46,24 @@ function DownloadBDS(){
         downloadBDSchild.on('exit', function (code) {
             if (code == 0){
                 logD('download Sucess');
-                logD('init extract');
-                // Unzip
-                var DecompressZip = require('decompress-zip');
                 if (process.platform == 'win32'){
-                  var ZIP_FILE_PATH = `${process.env.TMP}/${NAMEd}`;
+                    var ZIP_FILE_PATH = `${process.env.TMP}/${NAMEd}`;
+                    var ZIP_FILE_OUTPUT = `${process.env.USERPROFILE}/bds_Server`;
                 } else if (process.platform = 'linux'){
-                  var ZIP_FILE_PATH = `/tmp/${NAMEd}`;
+                    var ZIP_FILE_PATH = `/tmp/${NAMEd}`;
+                    var ZIP_FILE_OUTPUT = `${process.env.HOME}/bds_Server`;
                 }
-                var unzipper = new DecompressZip(ZIP_FILE_PATH);
-                
-                // Add the error event listener
-                unzipper.on('error', function (err) {
-                    logD('Caught an error');
-                    logD(err);
+                // Unzip
+                logD('init extract');
+                var AdmZip = require('adm-zip');
+                var zip = new AdmZip(ZIP_FILE_PATH);
+                var zipEntries = zip.getEntries();
+                zipEntries.forEach(function(zipEntry) {
+                    console.log(zipEntry.entryName.toString());
                 });
-                
-                // Notify when everything is extracted
-                unzipper.on('extract', function (log) {
-                    logD('Finished extracting', log+'');
-                    logD('-----------------------------------------------------------')
-                });
-                
-                // Notify "progress" of the decompressed files
-                unzipper.on('progress', function (fileIndex, fileCount) {
-                    console.log('Extracted file ' + (fileIndex + 1) + ' of ' + fileCount);
-                });
-                
-                // Start extraction of the content
-                unzipper.extract({
-                    path: 'bds',
-                    filter: function (file) {
-                        return file.type !== "SymbolicLink";
-                    }
-                });
+                zip.extractAllTo(ZIP_FILE_OUTPUT, true);
                 // End Unzip
             }
         });
     });
-}
-
+};

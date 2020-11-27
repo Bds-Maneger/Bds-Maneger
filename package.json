@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/Sirherobrine23/Bds_Maneger#readme",
   "dependencies": {
-    "decompress-zip": "^0.2.2",
+    "adm-zip": "^0.5.1",
     "electron-is": "^3.0.0",
     "node-cron": "^2.0.3",
     "node-telegram-bot-api": "^0.50.0"

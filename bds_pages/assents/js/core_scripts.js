@@ -1,10 +1,19 @@
 // Core Script
 // This is the script that manages and sends commands to the server (This is the script that manages and sends commands to the server (a bridge as we can call).
 // it will serve to communicate to and start the server. and it is a mandatory item for bds_maneger to work.
-var blank = ''  
+function LogOut(dados){
+    var GetDivorTextarea = document.getElementById('LOG').tagName
+    if (GetDivorTextarea == "TEXTAREA"){
+        document.getElementById('LOG').value += `${dados}`
+    } else {
+        var scripts = document.createElement("p");
+        scripts.innerHTML = dados;
+        document.getElementById('LOG').appendChild(scripts);
+    };
+};
 function startServer() {
     if (localStorage.getItem('bds_status') == 'started'){
-        console.log('Your Server has already started');
+        LogOut('Your Server has already started');
     } else {
         localStorage.setItem('bds_status', 'started');
         var inject = document.createElement("iframe");inject.id = 'serveinjectstart';inject.style.display = 'none';document.body.appendChild(inject); 
@@ -13,62 +22,23 @@ function startServer() {
 };
 function stopserver(){
     if (localStorage.getItem('bds_status') == 'stoped'){
-        console.log('Your server is already stopped');
+        LogOut('Your server is already stopped');
     } else {
-        setTimeout(() => {
-            serverstated.stdin.write('say Server is stop in 10s\n');
-            console.log('Server is stop in 10s');
-            setTimeout(() => {
-                serverstated.stdin.write('say Server is stop in 9s\n');
-                console.log('Server is stop in 9s');
-                setTimeout(() => {
-                    serverstated.stdin.write('say Server is stop in 8s\n');
-                    console.log('Server is stop in 8s');
-                    setTimeout(() => {
-                        serverstated.stdin.write('say Server is stop in 7s\n');
-                        console.log('Server is stop in 7s');
-                        setTimeout(() => {
-                            serverstated.stdin.write('say Server is stop in 6s\n');
-                            console.log('Server is stop in 6s');
-                            setTimeout(() => {
-                                serverstated.stdin.write('say Server is stop in 5s\n');
-                                console.log('Server is stop in 5s');
-                                setTimeout(() => {
-                                    serverstated.stdin.write('say Server is stop in 4s\n');
-                                    console.log('Server is stop in 4s');
-                                    setTimeout(() => {
-                                        serverstated.stdin.write('say Server is stop in 3s\n');
-                                        console.log('Server is stop in 3s');
-                                        setTimeout(() => {
-                                            serverstated.stdin.write('say Server is stop in 2s\n');
-                                            console.log('Server is stop in 2s');
-                                            setTimeout(() => {
-                                                serverstated.stdin.write('say Server is stop in 1s\n');
-                                                console.log('Server is stop in 1s');
-                                                setTimeout(() => {
-                                                    serverstated.stdin.write('say Server is stop\n');
-                                                    console.log('Server is stop');
-                                                    setTimeout(() => {
-                                                        serverstated.stdin.write('stop\n');
-                                                    }, 1000);
-                                                }, 1000);
-                                            }, 1000);
-                                        }, 1000);
-                                    }, 1000);
-                                }, 1000);
-                            }, 1000);
-                        }, 1000);
-                    }, 1000);
-                }, 1000);
-            }, 1000);
-        }, 1000);
-        localStorage.setItem('bds_status', 'stoped');
-    }
-    /*
-    document.getElementById("cmds").setAttribute('disabled','')
-    document.getElementById("comsen").setAttribute('disabled','')
-    document.getElementById('serveinjectstart').remove();*/
-}
+        serverstated.stdin.write(`say voce\n`);
+        for (let index = 1; index < 12; index++) {
+            setTimeout(function timer() {
+                if (index == '11'){
+                    serverstated.stdin.write('stop\n');
+                    localStorage.setItem('bds_status', 'stoped');
+                } else {
+                    serverstated.stdin.write(`say Server is stop in ${index}s\n`);
+                    console.log(`Server is stop in ${index}s`);
+                    LogOut(`Server is stop in ${index}s\n`);
+                };
+            }, index * 1000);
+        };
+    };
+};
 function restartServer(){
     if (localStorage.getItem('bds_status') == 'started'){
         stopserver();
@@ -87,10 +57,10 @@ function worldbackup(){
         today = `${yyyy}_${mm}-${dd}@@${minu}-${hour}`;
         var exec = require('child_process').exec;
         if (process.platform == 'win32'){
-            var serverstated = exec(`cd ${process.cwd()}/bds/worlds/ && tar.exe -czf %USERPROFILE%/Desktop/bds_backup_World_${today}.tar.gz *`, {detached: false,shell: true});
+            var serverstated = exec(`cd ${process.env.HOME}/bds_Server/worlds/ && tar.exe -czf %USERPROFILE%/Desktop/bds_backup_World_${today}.tar.gz *`, {detached: false,shell: true});
             var mensagemBackup = 'You backup is in desktop'
         } else if (process.platform == 'linux'){
-            var serverstated = exec(`cd ${process.cwd()}/bds/worlds/ && tar -czf ~/bds_backup_World_${today}.tar.gz *`, {detached: false,shell: true});
+            var serverstated = exec(`cd ${process.env.HOME}/bds_Server/worlds/ && tar -czf ~/bds_backup_World_${today}.tar.gz *`, {detached: false,shell: true});
             var mensagemBackup = 'You backup is in home dir'
         }        
         serverstated.on('exit', function (code) {

@@ -7,10 +7,10 @@ function backupS1(){
             var today = new Date();var dd = String(today.getDate()).padStart(2, '0');var mm = String(today.getMonth() + 1).padStart(2, '0');var yyyy = today.getFullYear();var hour = today.getHours();var minu = today.getMinutes();today = `${yyyy}_${mm}-${dd}@@${minu}-${hour}`;
             var exec = require('child_process').exec;
             if (process.platform == 'win32'){
-                var backupSChild = exec(`cd ${process.cwd()}/bds/worlds/ && tar.exe -czf %USERPROFILE%/Desktop/bds_backup_World_${today}.tar.gz *`);
+                var backupSChild = exec(`cd ${process.env.HOME}/bds_Server/worlds/ && tar.exe -czf %USERPROFILE%/Desktop/bds_backup_World_${today}.tar.gz *`);
                 var mensagemBackup = 'You backup is in desktop'
             } else if (process.platform == 'linux'){
-                var backupSChild = exec(`cd ${process.cwd()}/bds/worlds/ && tar -czf ~/bds_backup_World_${today}.tar.gz *`, {detached: false,shell: true});
+                var backupSChild = exec(`cd ${process.env.HOME}/bds_Server/worlds/ && tar -czf ~/bds_backup_World_${today}.tar.gz *`, {detached: false,shell: true});
                 var mensagemBackup = 'You backup is in home dir'
             }
             backupSChild.stdout.on('data', function (data){
