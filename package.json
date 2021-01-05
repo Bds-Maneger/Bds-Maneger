@@ -31,6 +31,7 @@
   "dependencies": {
     "adm-zip": "^0.5.1",
     "command-exists": "^1.2.9",
+    "electron": "^12.0.0-beta.12",
     "electron-is": "^3.0.0",
     "node-telegram-bot-api": "^0.51.0",
     "properties-to-json": "^0.1.7"
@@ -39,7 +40,6 @@
     "bds_maneger_api": "^23.45288.0-beta",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "electron-nightly": "^13.0.0-nightly.20201223",
     "esm": "^3.2.25",
     "mocha": "^8.2.1",
     "spectron": "^13.0.0"
